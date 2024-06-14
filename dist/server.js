@@ -8,11 +8,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const mongoose = require("mongoose");
-main().catch((err) => console.log(err));
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = __importDefault(require("mongoose"));
+const app_1 = __importDefault(require("./app"));
+const port = 5000;
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield mongoose.connect("mongodb://127.0.0.1:27017/test");
-        // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+        try {
+            yield mongoose_1.default.connect("mongodb://127.0.0.1:27017/test");
+            app_1.default.listen(port, () => {
+                console.log(`Example app listening on port ${port}`);
+            });
+        }
+        catch (err) {
+            console.log(err);
+        }
     });
 }
+main();
