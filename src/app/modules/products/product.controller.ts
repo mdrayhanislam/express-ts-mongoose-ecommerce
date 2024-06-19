@@ -11,13 +11,10 @@ const createProduct = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: 'Product created successfully!',
-      data: product,
+      data: result,
     })
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    })
+  } catch (err) {
+    console.log(err)
   }
 }
 
@@ -27,7 +24,43 @@ const getAllProduct = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'Product are retrieved succesfully',
+      message: 'Product created successfully!',
+      data: result,
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const getSingleProduct = async (req: Request, res: Response) => {
+  try {
+    const { productId } = req.params
+
+    const result = await ProductServices.getSingleProductFromDB(productId)
+
+    res.status(200).json({
+      success: true,
+      message: 'Product is retrieved succesfully',
+      data: result,
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const updateProductFromId = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.productId
+    const product: Product = req.body
+
+    const result = await ProductServices.updateProductFromIdDB(
+      productId,
+      product,
+    )
+
+    res.status(200).json({
+      success: true,
+      message: 'Product updated successfully!',
       data: result,
     })
   } catch (err) {
@@ -38,4 +71,6 @@ const getAllProduct = async (req: Request, res: Response) => {
 export const ProductControllers = {
   createProduct,
   getAllProduct,
+  getSingleProduct,
+  updateProductFromId,
 }
