@@ -20,11 +20,24 @@ const createProduct = async (req: Request, res: Response) => {
 
 const getAllProduct = async (req: Request, res: Response) => {
   try {
-    const result = await ProductServices.getAllProductFromDB()
+    const searchTerm: string | undefined = req.query.searchTerm as
+      | string
+      | undefined
+    const result = await ProductServices.getAllProductFromDB(searchTerm)
+
+    if (result.length === 0) {
+      const error = {
+        success: false,
+        message: `No products found matching the search term '${searchTerm}'`,
+      }
+      throw error
+    }
 
     res.status(200).json({
       success: true,
-      message: 'Products fetched successfully!',
+      message: searchTerm
+        ? `Products matching search term '${searchTerm}' fetched successfully!`
+        : `Products fetched successfully!`,
       data: result,
     })
   } catch (err) {
@@ -82,6 +95,20 @@ const deleteProductFromId = async (req: Request, res: Response) => {
     console.log(err)
   }
 }
+const searchProductFromId = async (req: Request, res: Response) => {
+  try {
+    const { productId } = req.params
+    const result = await ProductServices.searchProductFromIdDB(productId)
+
+    res.status(200).json({
+      success: true,
+      message: "Products matching search term 'iphone' fetched successfully!",
+      data: result,
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 export const ProductControllers = {
   createProduct,
@@ -89,4 +116,5 @@ export const ProductControllers = {
   getSingleProduct,
   updateProductFromId,
   deleteProductFromId,
+  searchProductFromId,
 }
