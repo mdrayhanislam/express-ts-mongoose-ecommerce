@@ -23,7 +23,7 @@ const VariantSchema = new Schema<Variant>({
   },
 })
 
-const ProductSchema: Schema = new Schema<Product>({
+const ProductSchema = new Schema<Product>({
   name: {
     type: String,
     required: [true, 'Product name is required'],

@@ -1,20 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express'
 import { Product } from './product.interface'
 import { ProductServices } from './product.service'
+import ProductValidationSchema from './student.zod.validation'
+// import { z } from "zod";
 
 const createProduct = async (req: Request, res: Response) => {
   try {
     const product: Product = req.body
-
-    const result = await ProductServices.createProductDB(product)
+    const zodparseData = ProductValidationSchema.parse(product)
+    const result = await ProductServices.createProductDB(zodparseData)
 
     res.status(200).json({
       success: true,
       message: 'Product created successfully!',
       data: result,
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    })
   }
 }
 
@@ -40,8 +47,12 @@ const getAllProduct = async (req: Request, res: Response) => {
         : `Products fetched successfully!`,
       data: result,
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    })
   }
 }
 
@@ -56,8 +67,12 @@ const getSingleProduct = async (req: Request, res: Response) => {
       message: 'Product is retrieved succesfully',
       data: result,
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    })
   }
 }
 
@@ -76,8 +91,12 @@ const updateProductFromId = async (req: Request, res: Response) => {
       message: 'Product updated successfully!',
       data: result,
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    })
   }
 }
 
@@ -91,8 +110,12 @@ const deleteProductFromId = async (req: Request, res: Response) => {
       message: 'Product deleted successfully!',
       data: result,
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    })
   }
 }
 const searchProductFromId = async (req: Request, res: Response) => {
@@ -105,8 +128,13 @@ const searchProductFromId = async (req: Request, res: Response) => {
       message: "Products matching search term 'iphone' fetched successfully!",
       data: result,
     })
-  } catch (err) {
-    console.log(err)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    })
   }
 }
 
