@@ -1,20 +1,26 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express'
 import { Order } from './order.interface'
 import { OrderServices } from './order.service'
+import OrderSchema from './order.zod.validation'
 
 const createOrder = async (req: Request, res: Response) => {
   try {
     const order: Order = req.body
-
-    const result = await OrderServices.createOrderService(order)
+    const zodparseData = OrderSchema.parse(order)
+    const result = await OrderServices.createOrderService(zodparseData)
 
     res.status(200).json({
       success: true,
       message: 'order created successfully!',
       data: result,
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    })
   }
 }
 
@@ -38,8 +44,12 @@ const getAllOrder = async (req: Request, res: Response) => {
         : 'Orders fetched successfully!',
       data: result,
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    })
   }
 }
 
