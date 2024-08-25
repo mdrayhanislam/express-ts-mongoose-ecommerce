@@ -128,7 +128,7 @@ const searchProductFromId = async (req: Request, res: Response) => {
       message: "Products matching search term 'iphone' fetched successfully!",
       data: result,
     })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
   } catch (err: any) {
     res.status(500).json({
       success: false,
