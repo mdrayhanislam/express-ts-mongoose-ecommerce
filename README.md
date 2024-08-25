@@ -1,4 +1,4 @@
-﻿# express-ts-mongoose-ecommerce
+# express-ts-mongoose-ecommerce
 
 # Product Management
 1. Create a New Product
