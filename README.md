@@ -1,6 +1,6 @@
 ﻿# express-ts-mongoose-ecommerce
 
-#Product Management
+# Product Management
 1. Create a New Product
 Endpoint: /api/products
 
